@@ -10,4 +10,6 @@ spring:
 #      control which jobs to execute on startup, empty means all jobs
       names:
 #       batch jobs are enabled by default
-      enabled: true
+      enabled: false
+
+  
