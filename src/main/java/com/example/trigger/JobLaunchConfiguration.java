@@ -27,17 +27,16 @@ public class JobLaunchConfiguration {
     @Autowired
     private Job job;
 
-    @Autowired
-    private JmsTemplate jmsTemplate;
-
     @Bean
-    public JmsDestinationPollingSource jmsDestinationPollingSource() {
+    public JmsDestinationPollingSource jmsDestinationPollingSource(JmsTemplate jmsTemplate) {
         JmsDestinationPollingSource jmsDestinationPollingSource = new JmsDestinationPollingSource(jmsTemplate);
+        jmsDestinationPollingSource.setDestinationName("jobtrigger");
+        jmsDestinationPollingSource.setMessageSelector("");
         return jmsDestinationPollingSource;
     }
 
     @Bean
-    public IntegrationFlow myDatabaseTriggeredFlow() {
+    public IntegrationFlow myJmsTriggeredFlow() {
         return IntegrationFlows.from(jmsDestinationPollingSource,
                 c -> c.poller(Pollers.fixedRate(5000, 2000)))
                 .handle(jobLaunchingGateway)
