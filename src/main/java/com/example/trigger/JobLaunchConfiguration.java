@@ -1,5 +1,6 @@
 package com.example.trigger;
 
+import com.example.model.Trade;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.integration.launch.JobLaunchingGateway;
@@ -13,6 +14,13 @@ import org.springframework.integration.dsl.core.Pollers;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.jms.JmsDestinationPollingSource;
 import org.springframework.jms.core.JmsTemplate;
+import org.springframework.jms.support.converter.MarshallingMessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
+import org.springframework.oxm.xstream.XStreamMarshaller;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableIntegration
@@ -29,6 +37,8 @@ public class JobLaunchConfiguration {
 
     @Bean
     public JmsDestinationPollingSource jmsDestinationPollingSource(JmsTemplate jmsTemplate) {
+        jmsTemplate.setMessageConverter(messageConverter());
+
         JmsDestinationPollingSource jmsDestinationPollingSource = new JmsDestinationPollingSource(jmsTemplate);
         jmsDestinationPollingSource.setDestinationName("jobtrigger");
         return jmsDestinationPollingSource;
@@ -38,16 +48,29 @@ public class JobLaunchConfiguration {
     public IntegrationFlow myJmsTriggeredFlow() {
         return IntegrationFlows.from(jmsDestinationPollingSource,
                 c -> c.poller(Pollers.fixedRate(5000, 2000)))
+                .transform(toJobLaunchRequest())
                 .handle(jobLaunchingGateway)
                 .handle(logger())
                 .get();
     }
 
     @Bean
-    TriggerMessageToJobLaunchRequestService toJobLaunchRequest() {
-        TriggerMessageToJobLaunchRequestService transformService = new TriggerMessageToJobLaunchRequestService();
+    TradeToJobLaunchRequestService toJobLaunchRequest() {
+        TradeToJobLaunchRequestService transformService = new TradeToJobLaunchRequestService();
         transformService.setJob(job);
         return transformService;
+    }
+
+    @Bean
+    MessageConverter messageConverter() {
+        XStreamMarshaller marshaller = new XStreamMarshaller();
+        Map<String, Class> aliases = new HashMap<>();
+        aliases.put("trade", Trade.class);
+        marshaller.setAliases(aliases);
+
+        MarshallingMessageConverter messageConverter = new MarshallingMessageConverter(marshaller);
+        messageConverter.setTargetType(MessageType.TEXT);
+        return messageConverter;
     }
 
     @Bean
