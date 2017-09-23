@@ -31,7 +31,6 @@ public class JobLaunchConfiguration {
     public JmsDestinationPollingSource jmsDestinationPollingSource(JmsTemplate jmsTemplate) {
         JmsDestinationPollingSource jmsDestinationPollingSource = new JmsDestinationPollingSource(jmsTemplate);
         jmsDestinationPollingSource.setDestinationName("jobtrigger");
-        jmsDestinationPollingSource.setMessageSelector("");
         return jmsDestinationPollingSource;
     }
 
