@@ -23,6 +23,6 @@ public class PrintTradeCommandLineRunner implements CommandLineRunner {
         XStream xStream = new XStream();
         xStream.alias("trade", Trade.class);
 
-        log.info(xStream.toXML(trade));
+        log.info("\n{}\n", xStream.toXML(trade));
     }
 }
