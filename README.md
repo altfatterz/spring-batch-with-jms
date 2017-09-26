@@ -62,3 +62,12 @@ Agent URL will be provided and then click on it.
 ```
 Here note also that the data is extracted from the message and set as a job parameter.
 
+Very good examples for Spring Integration Java DSL:
+https://github.com/spring-projects/spring-integration-java-dsl/wiki/Spring-Integration-Java-DSL-Reference#examples
+
+
+Spring Integration JMS example with XML:
+https://github.com/spring-projects/spring-integration-samples/blob/master/basic/jms/src/main/resources/META-INF/spring/integration/inboundChannelAdapter.xml
+
+Spring Integration JMS support:
+https://docs.spring.io/spring-integration/reference/htmlsingle/#jms
