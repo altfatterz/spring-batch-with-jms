@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
+import java.util.UUID;
+
 @Slf4j
 @MessageEndpoint
 public class TradeProcessor {
@@ -23,6 +25,7 @@ public class TradeProcessor {
     @ServiceActivator(inputChannel = "inputChannel", outputChannel = "outputChannel")
     public JobLaunchRequest process(Trade trade) {
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
+                .addString("run.id", UUID.randomUUID().toString())
                 .addString("stock", trade.getStock())
                 .addString("action", trade.getAction().toString())
                 .addLong("quantity", Long.valueOf(trade.getQuantity()));

@@ -5,12 +5,9 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.jsr.step.batchlet.BatchletAdapter;
-import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 @Configuration
 public class BatchConfiguration {
@@ -34,7 +31,6 @@ public class BatchConfiguration {
     @Bean
     public Job job(Step step) throws Exception {
         return jobBuilderFactory.get("myJob")
-                .incrementer(new RunIdIncrementer())
                 .start(step)
                 .build();
     }

@@ -1,6 +1,7 @@
 package com.example.trigger;
 
 import com.example.model.Trade;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.integration.launch.JobLaunchingGateway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import javax.jms.ConnectionFactory;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Configuration
 @EnableIntegration
 public class JobLaunchConfiguration {

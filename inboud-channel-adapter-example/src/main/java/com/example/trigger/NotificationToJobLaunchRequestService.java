@@ -6,6 +6,8 @@ import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.integration.launch.JobLaunchRequest;
 import org.springframework.messaging.Message;
 
+import java.util.UUID;
+
 public class NotificationToJobLaunchRequestService {
 
     private Job job;
@@ -19,6 +21,7 @@ public class NotificationToJobLaunchRequestService {
         Notification notification = message.getPayload();
 
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
+                .addString("run.id", UUID.randomUUID().toString())
                 .addString("email", notification.getEmail())
                 .addString("status", notification.getStatus());
 
