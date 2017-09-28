@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PrintTradeCommandLineRunner implements CommandLineRunner {
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void run(String... strings) throws Exception {
         log.info("marshalling Trade");

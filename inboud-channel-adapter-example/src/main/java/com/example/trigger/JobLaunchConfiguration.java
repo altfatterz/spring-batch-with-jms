@@ -22,20 +22,20 @@ import org.springframework.oxm.xstream.XStreamMarshaller;
 import java.util.HashMap;
 import java.util.Map;
 
-//@Configuration
-//@EnableIntegration
+@Configuration
+@EnableIntegration
 public class JobLaunchConfiguration {
 
-//    @Autowired
+    @Autowired
     private JobLaunchingGateway jobLaunchingGateway;
 
-//    @Autowired
+    @Autowired
     private JmsDestinationPollingSource jmsDestinationPollingSource;
 
-//    @Autowired
+    @Autowired
     private Job job;
 
-//    @Bean
+    @Bean
     public JmsDestinationPollingSource jmsDestinationPollingSource(JmsTemplate jmsTemplate) {
         jmsTemplate.setMessageConverter(messageConverter());
 
@@ -44,7 +44,7 @@ public class JobLaunchConfiguration {
         return jmsDestinationPollingSource;
     }
 
-//    @Bean
+    @Bean
     public IntegrationFlow myJmsTriggeredFlow() {
         return IntegrationFlows.from(jmsDestinationPollingSource,
                 c -> c.poller(Pollers.fixedRate(5000, 2000)))
@@ -54,14 +54,15 @@ public class JobLaunchConfiguration {
                 .get();
     }
 
-//    @Bean
+    @Bean
     TradeToJobLaunchRequestService toJobLaunchRequest() {
         TradeToJobLaunchRequestService transformService = new TradeToJobLaunchRequestService();
         transformService.setJob(job);
         return transformService;
     }
 
-//    @Bean
+    @Bean
+    @SuppressWarnings("Duplicates")
     MessageConverter messageConverter() {
         XStreamMarshaller marshaller = new XStreamMarshaller();
         Map<String, Class> aliases = new HashMap<>();
@@ -73,12 +74,12 @@ public class JobLaunchConfiguration {
         return messageConverter;
     }
 
-//    @Bean
+    @Bean
     JobLaunchingGateway jobLaunchingGateway(JobLauncher jobLauncher) {
         return new JobLaunchingGateway(jobLauncher);
     }
 
-//    @Bean
+    @Bean
     LoggingHandler logger() {
         return new LoggingHandler("INFO");
     }

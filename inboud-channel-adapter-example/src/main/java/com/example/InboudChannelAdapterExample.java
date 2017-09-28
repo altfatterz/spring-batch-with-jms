@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableBatchProcessing
-public class MyApp {
+public class InboudChannelAdapterExample {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MyApp.class, args);
+		SpringApplication.run(InboudChannelAdapterExample.class, args);
 	}
 }

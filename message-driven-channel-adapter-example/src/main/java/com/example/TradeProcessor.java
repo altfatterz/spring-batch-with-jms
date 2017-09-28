@@ -1,10 +1,10 @@
-package com.example.trigger2;
+package com.example;
 
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 
 @MessageEndpoint
-public class TradeServiceImpl {
+public class TradeProcessor {
 
     @ServiceActivator(inputChannel = "inputChannel", outputChannel = "outputChannel")
     public String upperCase(String input) {

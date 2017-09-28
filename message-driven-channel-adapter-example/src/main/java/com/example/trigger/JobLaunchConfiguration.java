@@ -1,4 +1,4 @@
-package com.example.trigger2;
+package com.example.trigger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
