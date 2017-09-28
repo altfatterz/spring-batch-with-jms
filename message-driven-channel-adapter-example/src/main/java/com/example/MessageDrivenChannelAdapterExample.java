@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableBatchProcessing
 public class MessageDrivenChannelAdapterExample {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MessageDrivenChannelAdapterExample.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MessageDrivenChannelAdapterExample.class, args);
+    }
 }

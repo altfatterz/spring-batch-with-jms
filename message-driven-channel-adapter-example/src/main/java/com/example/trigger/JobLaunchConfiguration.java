@@ -34,10 +34,10 @@ public class JobLaunchConfiguration {
     }
 
     @Bean
-    public AbstractMessageListenerContainer messageListenerContainer() {
+    public SimpleMessageListenerContainer messageListenerContainer() {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
-        simpleMessageListenerContainer.setDestinationName("queue-name");
+        simpleMessageListenerContainer.setDestinationName("trades");
         return simpleMessageListenerContainer;
     }
 
@@ -56,6 +56,5 @@ public class JobLaunchConfiguration {
         return IntegrationFlows.from("outputChannel")
                 .handle(CharacterStreamWritingMessageHandler.stdout())
                 .get();
-
     }
 }

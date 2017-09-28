@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.ToString;
 
 /**
+ * An example message:
+ *
  * <notification>
- *     <email>altfatterz@gmail.com</email>
+ *     <email>example@gmail.com</email>
  *     <status>ORDER_DISPATCHED</status>
  * </notification>
  */

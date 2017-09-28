@@ -4,6 +4,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
+/**
+ * An example message:
+ *
+ * <trade>
+ *   <stock>AMZN</stock>
+ *   <quantity>100</quantity>
+ *   <action>BUY</action>
+ * </trade>
+ */
 @Builder
 @Data
 @ToString

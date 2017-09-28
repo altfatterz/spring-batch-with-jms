@@ -48,7 +48,6 @@
 			<artifactId>spring-integration-stream</artifactId>
 		</dependency>
 
-
 		<!-- ActiveMQ -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
