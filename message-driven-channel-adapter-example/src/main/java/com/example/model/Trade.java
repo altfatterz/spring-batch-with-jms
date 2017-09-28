@@ -21,6 +21,7 @@ public class Trade {
     private String stock;
     private Integer quantity;
     private Action action;
+    private String status;
 
     public static enum  Action {
         SELL, BUY,

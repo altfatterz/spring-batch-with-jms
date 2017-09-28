@@ -1,5 +1,6 @@
 package com.example;
 
+import com.example.model.Trade;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -9,7 +10,8 @@ import org.springframework.integration.annotation.ServiceActivator;
 public class TradeProcessor {
 
     @ServiceActivator(inputChannel = "inputChannel", outputChannel = "outputChannel")
-    public String process(String input) {
-        return input;
+    public Trade process(Trade trade) {
+        trade.setStatus("PROCESSED");
+        return trade;
     }
 }

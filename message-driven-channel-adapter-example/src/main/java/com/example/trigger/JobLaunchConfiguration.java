@@ -1,5 +1,6 @@
 package com.example.trigger;
 
+import com.example.model.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -7,15 +8,19 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
-import org.springframework.integration.dsl.support.Transformers;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.jms.ChannelPublishingJmsMessageListener;
 import org.springframework.integration.jms.JmsMessageDrivenEndpoint;
-import org.springframework.integration.xml.xpath.XPathEvaluationType;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
+import org.springframework.jms.support.converter.MarshallingMessageConverter;
+import org.springframework.jms.support.converter.MessageConverter;
+import org.springframework.jms.support.converter.MessageType;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.oxm.xstream.XStreamMarshaller;
 
 import javax.jms.ConnectionFactory;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableIntegration
@@ -46,6 +51,8 @@ public class JobLaunchConfiguration {
     public JmsMessageDrivenEndpoint jmsMessageDrivenEndpoint() {
         ChannelPublishingJmsMessageListener channelPublishingJmsMessageListener = new ChannelPublishingJmsMessageListener();
         channelPublishingJmsMessageListener.setRequestChannel(inputChannel());
+        channelPublishingJmsMessageListener.setMessageConverter(messageConverter());
+
         JmsMessageDrivenEndpoint jmsMessageDrivenEndpoint = new JmsMessageDrivenEndpoint(messageListenerContainer(),
                 channelPublishingJmsMessageListener);
 
@@ -53,9 +60,22 @@ public class JobLaunchConfiguration {
     }
 
     @Bean
+    MessageConverter messageConverter() {
+        XStreamMarshaller marshaller = new XStreamMarshaller();
+        Map<String, Class> aliases = new HashMap<>();
+        aliases.put("trade", Trade.class);
+        marshaller.setAliases(aliases);
+
+        MarshallingMessageConverter messageConverter = new MarshallingMessageConverter(marshaller);
+        messageConverter.setTargetType(MessageType.TEXT);
+        return messageConverter;
+    }
+
+
+    @Bean
     public IntegrationFlow myFlow() {
         return IntegrationFlows.from("outputChannel")
-                .transform(Transformers.xpath("/trade/stock", XPathEvaluationType.STRING_RESULT))
+                //.transform(Transformers.xpath("/trade/stock", XPathEvaluationType.STRING_RESULT))
                 .handle(logger())
                 .get();
     }
