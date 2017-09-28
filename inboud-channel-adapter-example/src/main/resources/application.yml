@@ -12,6 +12,13 @@ spring:
 #       batch jobs are enabled by default
       enabled: false
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
 # if you don't define it will start an embedded instance
   activemq:
     broker-url: tcp://localhost:61616

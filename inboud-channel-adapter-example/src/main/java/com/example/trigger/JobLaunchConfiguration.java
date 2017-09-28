@@ -1,6 +1,6 @@
 package com.example.trigger;
 
-import com.example.model.Trade;
+import com.example.model.Notification;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.integration.launch.JobLaunchingGateway;
@@ -40,7 +40,7 @@ public class JobLaunchConfiguration {
         jmsTemplate.setMessageConverter(messageConverter());
 
         JmsDestinationPollingSource jmsDestinationPollingSource = new JmsDestinationPollingSource(jmsTemplate);
-        jmsDestinationPollingSource.setDestinationName("jobtrigger");
+        jmsDestinationPollingSource.setDestinationName("notifications");
         return jmsDestinationPollingSource;
     }
 
@@ -55,18 +55,17 @@ public class JobLaunchConfiguration {
     }
 
     @Bean
-    TradeToJobLaunchRequestService toJobLaunchRequest() {
-        TradeToJobLaunchRequestService transformService = new TradeToJobLaunchRequestService();
+    NotificationToJobLaunchRequestService toJobLaunchRequest() {
+        NotificationToJobLaunchRequestService transformService = new NotificationToJobLaunchRequestService();
         transformService.setJob(job);
         return transformService;
     }
 
     @Bean
-    @SuppressWarnings("Duplicates")
     MessageConverter messageConverter() {
         XStreamMarshaller marshaller = new XStreamMarshaller();
         Map<String, Class> aliases = new HashMap<>();
-        aliases.put("trade", Trade.class);
+        aliases.put("notification", Notification.class);
         marshaller.setAliases(aliases);
 
         MarshallingMessageConverter messageConverter = new MarshallingMessageConverter(marshaller);

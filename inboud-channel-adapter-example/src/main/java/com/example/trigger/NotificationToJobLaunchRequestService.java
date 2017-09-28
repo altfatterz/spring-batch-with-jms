@@ -1,12 +1,12 @@
 package com.example.trigger;
 
-import com.example.model.Trade;
+import com.example.model.Notification;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.integration.launch.JobLaunchRequest;
 import org.springframework.messaging.Message;
 
-public class TradeToJobLaunchRequestService {
+public class NotificationToJobLaunchRequestService {
 
     private Job job;
 
@@ -14,14 +14,13 @@ public class TradeToJobLaunchRequestService {
         this.job = job;
     }
 
-    public JobLaunchRequest toRequest(Message<Trade> message) {
+    public JobLaunchRequest toRequest(Message<Notification> message) {
 
-        Trade trade = message.getPayload();
+        Notification notification = message.getPayload();
 
         JobParametersBuilder jobParametersBuilder = new JobParametersBuilder()
-                .addString("stock", trade.getStock())
-                .addString("action", String.valueOf(trade.getAction()))
-                .addLong("quantity", Long.valueOf(trade.getQuantity()));
+                .addString("email", notification.getEmail())
+                .addString("status", notification.getStatus());
 
         return new JobLaunchRequest(job, jobParametersBuilder.toJobParameters());
     }
