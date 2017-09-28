@@ -1,6 +1,8 @@
 package com.example.trigger;
 
 import com.example.model.Trade;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.integration.launch.JobLaunchingGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,9 @@ public class JobLaunchConfiguration {
 
     @Autowired
     private ConnectionFactory connectionFactory;
+
+    @Autowired
+    private JobLaunchingGateway jobLaunchingGateway;
 
     @Bean
     public MessageChannel inputChannel() {
@@ -75,9 +80,14 @@ public class JobLaunchConfiguration {
     @Bean
     public IntegrationFlow myFlow() {
         return IntegrationFlows.from("outputChannel")
-                //.transform(Transformers.xpath("/trade/stock", XPathEvaluationType.STRING_RESULT))
+                .handle(jobLaunchingGateway)
                 .handle(logger())
                 .get();
+    }
+
+    @Bean
+    JobLaunchingGateway jobLaunchingGateway(JobLauncher jobLauncher) {
+        return new JobLaunchingGateway(jobLauncher);
     }
 
     @Bean
