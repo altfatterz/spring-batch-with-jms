@@ -7,10 +7,11 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.support.Transformers;
+import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.jms.ChannelPublishingJmsMessageListener;
 import org.springframework.integration.jms.JmsMessageDrivenEndpoint;
-import org.springframework.integration.stream.CharacterStreamWritingMessageHandler;
-import org.springframework.jms.listener.AbstractMessageListenerContainer;
+import org.springframework.integration.xml.xpath.XPathEvaluationType;
 import org.springframework.jms.listener.SimpleMessageListenerContainer;
 import org.springframework.messaging.MessageChannel;
 
@@ -54,7 +55,13 @@ public class JobLaunchConfiguration {
     @Bean
     public IntegrationFlow myFlow() {
         return IntegrationFlows.from("outputChannel")
-                .handle(CharacterStreamWritingMessageHandler.stdout())
+                .transform(Transformers.xpath("/trade/stock", XPathEvaluationType.STRING_RESULT))
+                .handle(logger())
                 .get();
+    }
+
+    @Bean
+    LoggingHandler logger() {
+        return new LoggingHandler("INFO");
     }
 }

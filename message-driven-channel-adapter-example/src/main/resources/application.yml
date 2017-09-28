@@ -9,7 +9,7 @@ spring:
     job:
 #      control which jobs to execute on startup, empty means all jobs
       names:
-#       batch jobs are enabled by default
+#      here we specify to not trigger jobs on startup, the default is true
       enabled: false
 
 # if you don't define it will start an embedded instance

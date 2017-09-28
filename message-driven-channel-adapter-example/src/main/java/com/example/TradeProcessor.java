@@ -10,6 +10,6 @@ public class TradeProcessor {
 
     @ServiceActivator(inputChannel = "inputChannel", outputChannel = "outputChannel")
     public String process(String input) {
-        return "message processed: " + input.toUpperCase();
+        return input;
     }
 }
