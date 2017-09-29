@@ -51,6 +51,7 @@ public class JobLaunchConfiguration {
         SimpleMessageListenerContainer simpleMessageListenerContainer = new SimpleMessageListenerContainer();
         simpleMessageListenerContainer.setConnectionFactory(connectionFactory);
         simpleMessageListenerContainer.setDestinationName("trades");
+        simpleMessageListenerContainer.setSessionTransacted(true);
         return simpleMessageListenerContainer;
     }
 
