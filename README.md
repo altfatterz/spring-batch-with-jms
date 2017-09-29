@@ -21,7 +21,7 @@ http://localhost:8161/admin/
 credentials: admin/admin
 ```
 
-3. Start hawtio client
+3. Start hawtio client:
 
 ```bash
 java -jar hawtio-app-1.5.4.jar --port 9999
@@ -31,6 +31,19 @@ java -jar hawtio-app-1.5.4.jar --port 9999
 
 On the `http://localhost:9999/hawtio` click on the `Connect` tab, then `Local` then `Apache ActiveMQ` and then click `Start the agent`. 
 Agent URL will be provided and then click on it.
+
+5. Install and start H2:
+
+```bash
+brew install h2
+brew services start h2
+```
+
+6. Verify that you can access the H2 console:
+
+```bash
+http://localhost:8082/
+```
 
 ## Receive a JMS message using JmsDestinationPollingSource
 
