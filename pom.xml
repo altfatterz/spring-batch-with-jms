@@ -14,6 +14,7 @@
 	<modules>
 		<module>inboud-channel-adapter-example</module>
 		<module>message-driven-channel-adapter-example</module>
+		<module>trigger-batch-job-upon-start</module>
 	</modules>
 
 </project>

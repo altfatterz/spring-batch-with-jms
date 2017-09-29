@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: spring-batch-simple-example
+
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test
+
+  batch:
+    job:
+#      control which jobs to execute on startup, empty means all jobs
+      names:
+#       batch jobs are enabled by default
+#      enabled: true
