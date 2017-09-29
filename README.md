@@ -1,23 +1,16 @@
-Spring Integration Java DSL Reference
+# Trigger a Spring Batch job with a JMS message 
 
-https://github.com/spring-projects/spring-integration-java-dsl/wiki/spring-integration-java-dsl-reference
+The example is using Spring Integration to receive the JMS message. There are two approaches:
 
-- two JMS based inbound Channel Adapater
+- using `JmsDestinationPollingSource` 
+- message-driven approach using the `JmsMessageDrivenEndpoint` 
 
-1. Inbound Channel Adapter
-    - using Spring’s JmsTemplate to receive based on a polling period.
+## Setup dependencies 
 
-2. Message Driven Channel Adapter
-    - requires a reference to an instance of a Spring MessageListener container
-    
-
-
-
-Trying the first version:
-
-1. Start activemq:
+1. Install and start ActiveMQ:
 
 ```bash
+brew install activemq
 brew services start activemq
 ```    
 
@@ -34,17 +27,29 @@ credentials: admin/admin
 java -jar hawtio-app-1.5.4.jar --port 9999
 ```
 
-4. Access hawtio
-
-```bash
-``` 
-
-5. Start hawtio agent:
+4. Start hawtio agent:
 
 On the `http://localhost:9999/hawtio` click on the `Connect` tab, then `Local` then `Apache ActiveMQ` and then click `Start the agent`. 
 Agent URL will be provided and then click on it.
 
-6. Send a message on the already created `jobtrigger` queue:
+## Receive a JMS message using JmsDestinationPollingSource
+
+1. Start app with the `InboudChannelAdapterExample` providing the `--spring.mail.username=<username>` and `--spring.mail.password=<password>` program arguments. 
+2. Send a message to the `notification` queue.
+
+```xml
+<notification>
+   <email>example@gmail.com</email>
+   <status>ORDER_DISPATCHED</status>
+</notification>
+
+```
+3. Verify that the Spring Batch job is triggered and an email is sent to `example@gmail.com` 
+
+## Receive a JMS message using JmsMessageDrivenEndpoint
+
+1. Start the app with the `MessageDrivenChannelAdapterExample`  
+2. Send a message to the `trade` queue.
 
 ```xml
 <trade>
@@ -54,20 +59,4 @@ Agent URL will be provided and then click on it.
 </trade>
 ```
 
-7. Verify that the job is being triggered:
-
-```bash
-
-
-```
-Here note also that the data is extracted from the message and set as a job parameter.
-
-Very good examples for Spring Integration Java DSL:
-https://github.com/spring-projects/spring-integration-java-dsl/wiki/Spring-Integration-Java-DSL-Reference#examples
-
-
-Spring Integration JMS example with XML:
-https://github.com/spring-projects/spring-integration-samples/blob/master/basic/jms/src/main/resources/META-INF/spring/integration/inboundChannelAdapter.xml
-
-Spring Integration JMS support:
-https://docs.spring.io/spring-integration/reference/htmlsingle/#jms
+3. Verify that the Spring Batch job is triggered and the trade is logged in the console.
